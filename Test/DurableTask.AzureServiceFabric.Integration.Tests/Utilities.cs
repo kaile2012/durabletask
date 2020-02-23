@@ -28,7 +28,7 @@ namespace DurableTask.AzureServiceFabric.Integration.Tests
     {
         public static TaskHubClient CreateTaskHubClient()
         {
-            var partitionProvider = new FabricPartitionEndpointResolver(new Uri(Constants.TestFabricApplicationAddress), new DefaultStringPartitionHashing());
+            var partitionProvider = new FabricPartitionEndpointResolver(new Uri(Constants.ApplicationFabricAddress), new DefaultStringPartitionHashing());
             var httpClientHandler = new HttpClientHandler()
             {
                 ServerCertificateCustomValidationCallback = (message, certificate, chain, errors) => true

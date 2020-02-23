@@ -15,6 +15,9 @@ namespace DurableTask.AzureServiceFabric.Integration.Tests
 {
     static class Constants
     {
-        public const string TestFabricApplicationAddress = "fabric:/TestFabricApplicationType/TestStatefulService";
+        public const string ApplicationPath          = @"C:\Users\boon\Documents\GitHub\durabletask\Test\TestFabricApplication\TestApplication";
+        public const string ApplicationFabricAddress = "fabric:/TestFabricApplicationType/TestStatefulService";
+        public const string ApplicationParameters    = "Local.5Node.xml";
+        public const string DebugOrRelease           = "Release";
     }
 }

@@ -39,7 +39,7 @@ namespace DurableTask.AzureServiceFabric.Integration.Tests.DeploymentUtil
         public ApplicationInfoReader(string applicationRootPath)
         {
             this.applicationRootPath = applicationRootPath;
-            this.applicationPackagePath = Path.Combine(applicationRootPath, @"pkg\Debug");
+            this.applicationPackagePath = Path.Combine(applicationRootPath, "pkg", Constants.DebugOrRelease);
 
             var applicationManifest = new XmlDocument();
             applicationManifest.Load(Path.Combine(this.applicationPackagePath, "ApplicationManifest.xml"));
@@ -71,7 +71,7 @@ namespace DurableTask.AzureServiceFabric.Integration.Tests.DeploymentUtil
 
         public NameValueCollection GetApplicationParameters()
         {
-            var applicationParametersPath = Path.Combine(applicationRootPath, @"ApplicationParameters\Local.5Node.xml");
+            var applicationParametersPath = Path.Combine(applicationRootPath, "ApplicationParameters", Constants.ApplicationParameters);
 
             var applicationParameters = new XmlDocument();
             applicationParameters.Load(applicationParametersPath);

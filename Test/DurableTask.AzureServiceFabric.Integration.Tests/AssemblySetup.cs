@@ -31,7 +31,7 @@ namespace DurableTask.AzureServiceFabric.Integration.Tests
             //Todo: Also this will assume that latest SF test application and service code is packaged, if that's not true
             //the issue might be hard to detect :-(
             DeploymentHelper.CleanAsync().Wait();
-            DeploymentHelper.DeployAsync(TestApplicationRootPath).Wait();
+            DeploymentHelper.DeployAsync(ApplicationRootPath).Wait();
         }
 
         [AssemblyCleanup]
@@ -40,19 +40,19 @@ namespace DurableTask.AzureServiceFabric.Integration.Tests
             DeploymentHelper.CleanAsync().Wait();
         }
 
-        static string TestApplicationRootPath
+        static string ApplicationRootPath
         {
             get
             {
-                var sourceRoot = Environment.GetEnvironmentVariable("SourceRoot") ?? string.Empty;
-                var applicationPath = Path.Combine(sourceRoot.Trim(), "Test", "TestFabricApplication", "TestApplication");
+                var applicationPath = Constants.ApplicationPath;
+                var packagePath = Path.Combine(applicationPath, "pkg", Constants.DebugOrRelease);
 
                 if (!Directory.Exists(applicationPath))
                 {
                     throw new Exception("Could not find test application path, define SourceRoot environment variable to the source path");
                 }
 
-                if (!Directory.Exists(Path.Combine(applicationPath, "pkg", "Debug")))
+                if (!Directory.Exists(packagePath))
                 {
                     throw new Exception("Could not find test application package, make sure the test application is built and package generated before running the tests");
                 }
