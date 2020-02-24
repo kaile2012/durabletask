@@ -195,7 +195,7 @@ namespace DurableTask.AzureServiceFabric.Remote
         {
             message.OrchestrationInstance.InstanceId.EnsureValidInstanceId();
             var uri = await ConstructEndpointUriAsync(message.OrchestrationInstance.InstanceId, GetMessageFragment(message.SequenceNumber), CancellationToken.None);
-            await this.PutJsonAsync(uri, message);
+            await this.PostJsonAsync(uri, message);
         }
 
         /// <summary>
@@ -263,6 +263,25 @@ namespace DurableTask.AzureServiceFabric.Remote
             };
 
             HttpResponseMessage result = await this.HttpClient.PutAsync(uri, @object, mediaFormatter);
+            if (result.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
+                throw new OrchestrationAlreadyExistsException("Orchestration already exists");
+            }
+
+            if (!result.IsSuccessStatusCode)
+            {
+                throw new RemoteServiceException("CreateTaskOrchestrationAsync failed", result.StatusCode);
+            }
+        }
+
+        private async Task PostJsonAsync(Uri uri, object @object)
+        {
+            var mediaFormatter = new JsonMediaTypeFormatter()
+            {
+                SerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }
+            };
+
+            HttpResponseMessage result = await this.HttpClient.PostAsync(uri, @object, mediaFormatter);
             if (result.StatusCode == System.Net.HttpStatusCode.Conflict)
             {
                 throw new OrchestrationAlreadyExistsException("Orchestration already exists");
